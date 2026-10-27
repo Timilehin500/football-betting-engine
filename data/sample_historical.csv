@@ -1,0 +1,101 @@
+HomeTeam,AwayTeam,HF,AF,HY,AY,HST,AST,HC,AC
+Arsenal,Chelsea,12,14,2,3,7,5,6,4
+Manchester City,Liverpool,10,13,1,2,9,6,8,5
+Tottenham,Manchester United,15,11,3,1,5,4,5,3
+Newcastle,Aston Villa,13,16,2,3,6,5,7,6
+Brighton,West Ham,11,12,1,2,8,7,9,5
+Brentford,Fulham,14,10,2,1,5,6,6,4
+Crystal Palace,Everton,12,15,3,2,4,5,5,7
+Wolverhampton,Nottm Forest,13,14,2,3,6,4,4,5
+Bournemouth,Burnley,11,12,1,2,7,6,8,6
+Luton,Sheffield United,15,13,3,2,5,5,5,4
+Arsenal,Liverpool,14,12,2,1,9,7,7,6
+Manchester City,Chelsea,11,13,1,2,10,8,9,7
+Tottenham,Newcastle,12,14,2,3,6,5,6,5
+Aston Villa,West Ham,13,11,3,1,7,6,7,4
+Brighton,Brentford,10,12,1,2,8,7,8,5
+Fulham,Crystal Palace,14,15,2,3,5,4,6,7
+Everton,Wolverhampton,12,11,3,2,5,6,5,4
+Nottm Forest,Bournemouth,13,14,2,1,6,5,4,6
+Burnley,Luton,11,12,1,2,4,5,5,4
+Sheffield United,Manchester United,14,16,2,3,4,6,5,5
+Arsenal,Manchester City,15,13,2,1,9,8,8,7
+Liverpool,Chelsea,12,14,1,2,8,7,7,6
+Tottenham,Aston Villa,13,12,3,2,6,5,6,5
+Newcastle,West Ham,14,11,2,1,7,6,8,4
+Brighton,Crystal Palace,11,13,1,2,8,6,9,6
+Brentford,Everton,12,14,2,3,5,5,6,5
+Fulham,Wolverhampton,14,13,3,2,5,6,5,5
+Nottm Forest,Sheffield United,12,11,2,1,5,5,4,4
+Bournemouth,Luton,13,12,1,2,7,5,8,5
+Burnley,Manchester United,15,14,3,2,4,6,4,5
+Manchester City,Arsenal,13,15,1,2,10,9,9,8
+Chelsea,Liverpool,14,12,2,1,8,8,7,7
+Aston Villa,Tottenham,12,13,2,3,6,6,6,6
+West Ham,Newcastle,11,14,1,2,6,7,5,8
+Crystal Palace,Brighton,13,11,3,1,5,8,6,9
+Everton,Brentford,14,12,2,2,5,5,5,6
+Wolverhampton,Fulham,13,14,2,3,6,5,5,5
+Sheffield United,Nottm Forest,11,12,1,2,4,5,4,4
+Luton,Bournemouth,12,13,2,1,5,7,5,8
+Manchester United,Burnley,14,15,3,3,6,4,5,4
+Arsenal,Tottenham,16,13,2,2,9,6,8,6
+Manchester City,Newcastle,12,11,1,1,10,6,9,7
+Liverpool,Aston Villa,13,12,2,2,8,6,7,6
+Chelsea,West Ham,14,13,3,1,7,6,7,5
+Brighton,Fulham,11,11,1,2,8,5,9,5
+Brentford,Crystal Palace,13,14,2,3,5,5,6,7
+Everton,Nottm Forest,12,11,3,2,5,5,5,4
+Wolverhampton,Sheffield United,13,12,2,1,5,4,5,4
+Bournemouth,Manchester United,12,15,1,3,6,6,8,5
+Luton,Burnley,14,13,2,2,4,4,5,4
+Real Madrid,Barcelona,11,13,2,3,8,7,6,5
+Atletico Madrid,Sevilla,14,12,3,2,6,5,5,4
+Valencia,Villarreal,12,11,2,1,5,6,4,5
+Athletic Bilbao,Real Sociedad,15,14,3,3,6,5,6,5
+Getafe,Rayo Vallecano,16,15,4,3,5,4,4,4
+Barcelona,Atletico Madrid,13,14,2,3,9,6,7,5
+Real Madrid,Valencia,12,11,1,2,9,5,8,4
+Sevilla,Athletic Bilbao,13,15,2,3,5,6,5,6
+Villarreal,Getafe,11,16,1,4,6,4,5,4
+Real Sociedad,Rayo Vallecano,12,15,2,3,6,4,5,4
+Juventus,AC Milan,12,14,2,3,7,6,6,5
+Inter Milan,Napoli,13,11,1,2,9,7,8,6
+Roma,Lazio,14,13,3,2,6,5,6,5
+Atalanta,Fiorentina,12,12,2,2,7,6,7,6
+Bologna,Torino,13,14,2,3,5,5,5,5
+AC Milan,Inter Milan,14,13,3,1,7,9,6,8
+Napoli,Juventus,11,12,1,2,8,7,7,6
+Lazio,Roma,13,14,2,3,5,6,5,6
+Fiorentina,Atalanta,12,12,2,2,6,7,6,7
+Torino,Bologna,14,13,3,2,5,5,5,5
+Bayern Munich,Dortmund,13,14,1,2,10,8,9,7
+Leverkusen,Leipzig,12,11,2,1,8,7,7,6
+Frankfurt,Wolfsburg,14,13,3,2,6,5,6,5
+Gladbach,Stuttgart,12,13,2,3,6,6,5,6
+Freiburg,Hoffenheim,13,12,2,2,5,6,5,5
+Dortmund,Leverkusen,14,12,2,1,8,8,7,7
+Leipzig,Bayern Munich,11,13,1,2,7,10,6,9
+Wolfsburg,Frankfurt,13,14,2,3,5,6,5,6
+Stuttgart,Gladbach,13,12,3,2,6,6,6,5
+Hoffenheim,Freiburg,12,13,2,2,6,5,5,5
+PSG,Marseille,13,15,2,3,10,7,8,6
+Lyon,Monaco,12,11,1,2,7,7,7,6
+Lille,Nice,14,13,3,2,6,5,6,5
+Lens,Rennes,12,13,2,3,5,6,5,6
+Strasbourg,Montpellier,13,14,2,2,5,5,5,5
+Marseille,Lyon,15,12,3,1,7,7,6,7
+Monaco,PSG,11,13,2,2,7,10,6,8
+Nice,Lille,13,14,2,3,5,6,5,6
+Rennes,Lens,12,12,3,2,6,5,6,5
+Montpellier,Strasbourg,14,13,2,2,5,5,5,5
+Arsenal,West Ham,13,12,2,1,9,6,8,5
+Manchester City,Tottenham,14,12,1,2,10,6,9,6
+Liverpool,Newcastle,13,14,2,2,8,6,7,7
+Chelsea,Aston Villa,12,11,1,2,7,6,7,6
+Brighton,Wolverhampton,11,13,2,3,8,5,9,5
+Manchester United,Everton,14,13,3,2,6,5,5,5
+Brentford,Nottm Forest,12,14,2,3,5,5,6,5
+Fulham,Bournemouth,13,12,2,1,5,7,5,8
+Crystal Palace,Burnley,14,13,3,2,5,4,6,4
+Sheffield United,Luton,12,14,2,3,4,4,4,5
