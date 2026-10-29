@@ -181,7 +181,6 @@ def predict():
                     seen_pairs.add(pair_key)
                     fixtures_to_process.append((t1, t2))
         else:
-            # Fallback fixtures if data directory is empty on Vercel deployment
             fixtures_to_process = [("Arsenal", "Chelsea"), ("Liverpool", "Man City"), ("Real Madrid", "Barcelona")]
 
     evaluated_picks = []
