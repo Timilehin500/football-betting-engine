@@ -9,29 +9,22 @@ app = Flask(__name__)
 DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 
 def load_data():
+    if not os.path.exists(DATA_DIR):
+        return pd.DataFrame()
     files = glob.glob(os.path.join(DATA_DIR, "*.csv"))
     dfs = []
     for f in files:
         try:
             df = pd.read_csv(f)
-            # Standardize column headers
             df.columns = [str(c).strip().upper() for c in df.columns]
             dfs.append(df)
         except Exception:
             pass
     if dfs:
-        full_df = pd.concat(dfs, ignore_index=True)
-        return full_df
+        return pd.concat(dfs, ignore_index=True)
     return pd.DataFrame()
 
 def calculate_rolling_features(df):
-    """
-    Computes rolling 5-game offensive and defensive stats for every team:
-    - SOT Created & Conceded
-    - Corners Created & Conceded
-    - Fouls Committed & Drawn
-    - Yellow/Red Cards Received & Forced
-    """
     teams = {}
     if df.empty:
         return teams
@@ -43,7 +36,6 @@ def calculate_rolling_features(df):
         if not home or not away or home.lower() == 'nan' or away.lower() == 'nan':
             continue
 
-        # Extract match stats with fallbacks
         hst = float(row.get('HST', 4.0)) if pd.notnull(row.get('HST')) else 4.0
         ast = float(row.get('AST', 4.0)) if pd.notnull(row.get('AST')) else 4.0
         hc = float(row.get('HC', 5.0)) if pd.notnull(row.get('HC')) else 5.0
@@ -58,7 +50,6 @@ def calculate_rolling_features(df):
         if away not in teams:
             teams[away] = {'sot_for': [], 'sot_ag': [], 'corn_for': [], 'corn_ag': [], 'foul_for': [], 'foul_ag': [], 'card_for': []}
 
-        # Home team stats
         teams[home]['sot_for'].append(hst)
         teams[home]['sot_ag'].append(ast)
         teams[home]['corn_for'].append(hc)
@@ -67,7 +58,6 @@ def calculate_rolling_features(df):
         teams[home]['foul_ag'].append(af)
         teams[home]['card_for'].append(hy)
 
-        # Away team stats
         teams[away]['sot_for'].append(ast)
         teams[away]['sot_ag'].append(hst)
         teams[away]['corn_for'].append(ac)
@@ -76,7 +66,6 @@ def calculate_rolling_features(df):
         teams[away]['foul_ag'].append(hf)
         teams[away]['card_for'].append(ay)
 
-    # Compute rolling 5-game averages
     stats = {}
     for t, d in teams.items():
         stats[t] = {
@@ -91,14 +80,9 @@ def calculate_rolling_features(df):
     return stats
 
 def evaluate_match_quant(home, away, stats):
-    """
-    Evaluates all quantitative markets for a match and returns the single highest-scoring pick.
-    Applies strict threshold checks (Cutoff score >= 8.5/10).
-    """
     h_s = stats.get(home, {'sot_for': 4.5, 'sot_ag': 4.5, 'corn_for': 5.0, 'corn_ag': 5.0, 'foul_for': 11.0, 'foul_ag': 11.0, 'card_for': 1.8})
     a_s = stats.get(away, {'sot_for': 4.5, 'sot_ag': 4.5, 'corn_for': 5.0, 'corn_ag': 5.0, 'foul_for': 11.0, 'foul_ag': 11.0, 'card_for': 1.8})
 
-    # Weighted Expected Values (Combining For & Against statistics)
     exp_sot = round((h_s['sot_for'] + a_s['sot_ag'] + a_s['sot_for'] + h_s['sot_ag']) / 2.0, 1)
     exp_corners = round((h_s['corn_for'] + a_s['corn_ag'] + a_s['corn_for'] + h_s['corn_ag']) / 2.0, 1)
     exp_fouls = round((h_s['foul_for'] + a_s['foul_ag'] + a_s['foul_for'] + h_s['foul_ag']) / 2.0, 1)
@@ -106,7 +90,6 @@ def evaluate_match_quant(home, away, stats):
 
     candidate_markets = []
 
-    # 1. Shots on Target Market
     if exp_sot >= 10.0:
         sot_score = round(min(10.0, 7.5 + (exp_sot - 10.0) * 0.5), 1)
         candidate_markets.append({
@@ -118,7 +101,6 @@ def evaluate_match_quant(home, away, stats):
             'odd': 1.75
         })
 
-    # 2. Corners Market
     if exp_corners >= 10.5:
         corn_score = round(min(10.0, 7.2 + (exp_corners - 10.5) * 0.6), 1)
         candidate_markets.append({
@@ -130,7 +112,6 @@ def evaluate_match_quant(home, away, stats):
             'odd': 1.68
         })
 
-    # 3. Fouls Market
     if exp_fouls >= 24.0:
         foul_score = round(min(10.0, 7.0 + (exp_fouls - 24.0) * 0.4), 1)
         candidate_markets.append({
@@ -142,7 +123,6 @@ def evaluate_match_quant(home, away, stats):
             'odd': 1.80
         })
 
-    # 4. Cards Market
     if exp_cards >= 4.2:
         card_score = round(min(10.0, 7.0 + (exp_cards - 4.2) * 0.7), 1)
         candidate_markets.append({
@@ -154,7 +134,6 @@ def evaluate_match_quant(home, away, stats):
             'odd': 1.70
         })
 
-    # Fallback market if stats are balanced
     if not candidate_markets:
         base_score = round(min(8.4, 6.0 + (exp_sot / 3.0)), 1)
         candidate_markets.append({
@@ -166,17 +145,19 @@ def evaluate_match_quant(home, away, stats):
             'odd': 1.50
         })
 
-    # Pick the single highest scoring market for this fixture
     best_pick = max(candidate_markets, key=lambda x: x['score'])
     best_pick['match'] = f"{home} vs {away}"
     return best_pick
 
-@app.route('/api/predict', methods=['POST'])
+@app.route('/api/predict', methods=['POST', 'GET'])
 def predict():
-    req = request.get_json() or {}
+    req = request.get_json() if request.is_json else {}
+    if not req:
+        req = request.form.to_dict() if request.form else {}
+
     custom_fixtures = req.get('fixtures', [])
     bankroll = float(req.get('bankroll', 15000))
-    mode = req.get('mode', '5-odds') # '5-odds' or '10-odds'
+    mode = req.get('mode', '5-odds')
 
     df = load_data()
     team_stats = calculate_rolling_features(df)
@@ -190,15 +171,18 @@ def predict():
             if h and a and h.lower() != a.lower():
                 fixtures_to_process.append((h, a))
     else:
-        # Generate clean pairings from dataset without duplicates
         all_teams = list(team_stats.keys())
         seen_pairs = set()
-        for i in range(0, len(all_teams) - 1, 2):
-            t1, t2 = all_teams[i], all_teams[i+1]
-            pair_key = tuple(sorted([t1.lower(), t2.lower()]))
-            if pair_key not in seen_pairs:
-                seen_pairs.add(pair_key)
-                fixtures_to_process.append((t1, t2))
+        if len(all_teams) >= 2:
+            for i in range(0, len(all_teams) - 1, 2):
+                t1, t2 = all_teams[i], all_teams[i+1]
+                pair_key = tuple(sorted([t1.lower(), t2.lower()]))
+                if pair_key not in seen_pairs:
+                    seen_pairs.add(pair_key)
+                    fixtures_to_process.append((t1, t2))
+        else:
+            # Fallback fixtures if data directory is empty on Vercel deployment
+            fixtures_to_process = [("Arsenal", "Chelsea"), ("Liverpool", "Man City"), ("Real Madrid", "Barcelona")]
 
     evaluated_picks = []
     seen_matches = set()
@@ -212,25 +196,20 @@ def predict():
         pick = evaluate_match_quant(home, away, team_stats)
         evaluated_picks.append(pick)
 
-    # Sort all evaluated picks by quantitative score (Highest score first)
     evaluated_picks.sort(key=lambda x: x['score'], reverse=True)
 
-    # Filter qualified picks (Score >= 8.5/10)
     qualified_picks = [p for p in evaluated_picks if p['score'] >= 8.5]
     if not qualified_picks:
-        qualified_picks = evaluated_picks # Fallback if few fixtures
+        qualified_picks = evaluated_picks
 
-    # Number of legs based on user strategy selection
     num_legs = 3 if mode == '5-odds' else 4
     selected_picks = qualified_picks[:num_legs]
 
-    # Calculate ticket odds, stake, payout
     total_odds = 1.0
     for p in selected_picks:
         total_odds *= p['odd']
     total_odds = round(total_odds, 2)
 
-    # Strict 1.0% Bankroll Management
     stake = round(bankroll * 0.01, 2)
     payout = round(stake * total_odds, 2)
     win_rate = round(min(85.0, (100.0 / total_odds) * 1.8), 1)
